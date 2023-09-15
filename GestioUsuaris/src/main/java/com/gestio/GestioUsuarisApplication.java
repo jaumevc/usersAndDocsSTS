@@ -16,7 +16,6 @@ public class GestioUsuarisApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("Hola des de diput");
 		LOG.warn("Hola Mon Jaume");
 		LOG.info("Proves");
 	}
