@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 //import app.model.UtilsLog;
@@ -84,8 +85,9 @@ public class FrameLogin extends JFrame {
 //					UtilsLog.crearFitxer("\\\\sarroca\\comu-inf$\\Suport\\Logs\\arxiu_loginOK_"+txtFieldUser.getText()+"_"+UtilsTime.nowName()+".log", txtFieldUser.getText()+", login OK\n"+UtilsTime.now());
 					
 					frameLogin.setVisible(false);
-//					FrameUsers frame = new FrameUsers(txtFieldUser.getText());
-//					frame.setVisible(true);
+					
+					FrameUsers frame = new FrameUsers(txtFieldUser.getText());
+					frame.setVisible(true);
 					
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(rootPane, "Validació KO!!\n"+ex.getMessage());

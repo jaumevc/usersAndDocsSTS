@@ -21,6 +21,7 @@ public class GestioUsuarisApplication /*implements CommandLineRunner*/{
 		SwingUtilities.invokeLater(() -> {
 			FrameLogin loginFrame = new FrameLogin();
 			loginFrame.setVisible(true);
+			LOG.info("Proves d'inici realitzades ok");
 		});
 	}
 
