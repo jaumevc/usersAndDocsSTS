@@ -35,7 +35,7 @@ public class FrameLogin extends JFrame {
 		setTitle("LOGIN GESTIO D'USUARIS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 370, 300);
-//		setIconImage(new ImageIcon(getClass().getResource("/images/grupo.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource("/images/grupo.png")).getImage());
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
