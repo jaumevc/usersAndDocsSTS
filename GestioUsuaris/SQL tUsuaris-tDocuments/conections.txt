@@ -1,0 +1,16 @@
+https://www.top-password.com/knowledge/change-sql-server-password.html
+
+//connect to producció
+//	private String connectionUrl = "jdbc:sqlserver://sec:1433;"//"jdbc:sqlserver://sec.diputaciolleida.es:1433;"//"jdbc:sqlserver://SEC:1433;"
+//			+ "databaseName=documents;"
+//			+ "user=addUser;"
+//			+ "password=Jg.1a2b3c;"
+//			+ "encrypt=false;"
+//			+ "trustServerCertificate=false;";
+	
+// connect to test
+	private String connectionUrl = "jdbc:sqlserver://localhost:1433;"
+			 +	"database=demodb;"
+			 +  "user=addUser;"
+			 +  "password=Jv.1a2b3c;"
+			 +  "encrypt=true;trustServerCertificate=true;";
