@@ -1,4 +1,4 @@
-package com.frames;
+package app.frames;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -23,7 +23,10 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-//import app.beans.User;
+import app.beans.User;
+import app.dao.UserDAO;
+import app.service.UtilsTime;
+import app.service.UtilsLog;
 //import app.dao.UserDAO;
 //import app.model.UtilsLog;
 //import app.model.UtilsTime;
@@ -52,7 +55,8 @@ public class FrameUsers extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 585, 616);
 		
-		setIconImage(new ImageIcon(getClass().getResource("/images/grupo.png")).getImage());
+//		setIconImage(new ImageIcon(getClass().getResource("/images/grupo.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource("/static/images/grupo.png")).getImage());
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -208,28 +212,28 @@ public class FrameUsers extends JFrame {
 						&& !textFieldNom.getText().isEmpty()
 						&& !textFieldLogin.getText().isEmpty()) {
 					
-//					User usuari=new User();
-//					usuari.setNif(textFieldNif.getText().toUpperCase());
-//					usuari.setCognom1(textFieldCognom1.getText().toUpperCase());
-//					usuari.setCognom2(textFieldCognom2.getText().toUpperCase());
-//					usuari.setNom(textFieldNom.getText().toUpperCase());
-//					usuari.setLogin(textFieldLogin.getText());
+					User usuari=new User();
+					usuari.setNif(textFieldNif.getText().toUpperCase());
+					usuari.setCognom1(textFieldCognom1.getText().toUpperCase());
+					usuari.setCognom2(textFieldCognom2.getText().toUpperCase());
+					usuari.setNom(textFieldNom.getText().toUpperCase());
+					usuari.setLogin(textFieldLogin.getText());
 					
 					if(cBChecked.isSelected()) {
-//						usuari.setChecked(true);
+						usuari.setChecked(true);
 					} else {
-//						usuari.setChecked(false);
+						usuari.setChecked(false);
 					}
 					
-//					UserDAO daoUser =  new UserDAO();
-//					try {
-//						String registre = daoUser.registrarUser(usuari);
-//						JOptionPane.showMessageDialog(rootPane, registre);
-//						UtilsLog.crearFitxer("\\\\sarroca\\comu-inf$\\Suport\\Logs\\arxiu_registre_"+userName+"_"+UtilsTime.nowName()+".log", "L'usuari: "+userName+" ha creat el registre: "+registre+"\n"+UtilsTime.now());
+					UserDAO daoUser =  new UserDAO();
+					try {
+						String registre = daoUser.registrarUser(usuari);
+						JOptionPane.showMessageDialog(rootPane, registre);
+						UtilsLog.crearFitxer("\\\\sarroca\\comu-inf$\\Suport\\Logs\\arxiu_registre_"+userName+"_"+UtilsTime.nowName()+".log", "L'usuari: "+userName+" ha creat el registre: "+registre+"\n"+UtilsTime.now());
 						netejaTextFields();
-//					} catch (SQLException e1) {
-//						e1.printStackTrace();
-//					}
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		});

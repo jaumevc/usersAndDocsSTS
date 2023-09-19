@@ -1,15 +1,15 @@
-package com.gestio;
+package app.gestio;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import app.frames.FrameLogin;
+
 import javax.swing.SwingUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.frames.FrameLogin;
 
 @SpringBootApplication
 public class GestioUsuarisApplication /*implements CommandLineRunner*/{

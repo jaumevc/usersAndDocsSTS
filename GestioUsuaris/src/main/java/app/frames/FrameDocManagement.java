@@ -1,4 +1,4 @@
-package com.frames;
+package app.frames;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
