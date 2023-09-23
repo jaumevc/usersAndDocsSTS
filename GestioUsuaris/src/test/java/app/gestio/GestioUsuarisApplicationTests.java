@@ -1,4 +1,4 @@
-package com.gestio;
+package app.gestio;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
