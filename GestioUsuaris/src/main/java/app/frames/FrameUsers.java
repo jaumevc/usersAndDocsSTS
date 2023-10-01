@@ -2,15 +2,21 @@ package app.frames;
 
 import java.awt.Color;
 import java.awt.Font;
+//import app.model.UtilsLog;
+//import app.model.UtilsTime;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.sql.SQLException;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.sql.DataSource;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,15 +29,16 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import app.beans.User;
-import app.dao.UserDAO;
-import app.service.UtilsTime;
-import app.service.UtilsLog;
-//import app.dao.UserDAO;
-//import app.model.UtilsLog;
-//import app.model.UtilsTime;
-import java.awt.SystemColor;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
+import app.beans.User;
+import app.repository.UserRepository;
+import app.service.UtilsLog;
+import app.service.UtilsTime;
+
+@Component
 public class FrameUsers extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -45,12 +52,17 @@ public class FrameUsers extends JFrame {
 	private JCheckBox cBChecked;
 	
 	private JButton btnAfegirUsuari, btnCheckDocs;
-
+	
+//	@Autowired
+//	JdbcTemplate template;
+////	@Autowired
+//	private UserRepository daoUser;
+	
 	/**
 	 * Create the frame.
 	 * @param usuari 
 	 */
-	public FrameUsers(String usuari) {
+	public FrameUsers(String usuari, JdbcTemplate jdbcTemplate) {
 		setTitle("GESTIO D'USUARIS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 585, 616);
@@ -106,12 +118,13 @@ public class FrameUsers extends JFrame {
 		contentPane.add(btnAfegirUsuari);
 		contentPane.add(btnCheckDocs);
 		
-		addListeners(usuari, this); 
+		
+		addListeners(usuari, this, jdbcTemplate); 
 	}
 	
 	
 
-	private void addListeners(String userName, FrameUsers frameUsers) {
+	private void addListeners(String userName, FrameUsers frameUsers, JdbcTemplate jdbcTemplate) {
 		
 		textFieldNif.addFocusListener(new FocusListener()  {
 			 @Override
@@ -225,13 +238,39 @@ public class FrameUsers extends JFrame {
 						usuari.setChecked(false);
 					}
 					
-					UserDAO daoUser =  new UserDAO();
+					 
+					/**********************destacar*****************************/
+					
+					//TODO Jaume: EXPLORAR aquesta optenció de les properties:
+					
+//					Properties props = new Properties();
+//					try {
+//						props = PropertiesLoaderUtils.loadAllProperties("application.properties");
+//					} catch (IOException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+					
+					//1.- crear DataSource amb aquestes props
+					//2.- setejar la conexio del Datasource al JdbcTemplate x posteriorment crear les querys
+					
+					//https://www.baeldung.com/spring-boot-configure-data-source-programmatic
+					//https://www.tabnine.com/code/java/methods/org.springframework.jdbc.core.JdbcTemplate/setDataSource
+					/*******************fi*destacar*****************************/
+					
+					
+//					UserDAO daoUser =  new UserDAO();
+					UserRepository daoUser = new UserRepository(jdbcTemplate);
+					
 					try {
-						String registre = daoUser.registrarUser(usuari);
+//						String registre = daoUser.registrarUser(usuari);
+						String registre = daoUser.save(usuari);
 						JOptionPane.showMessageDialog(rootPane, registre);
-						UtilsLog.crearFitxer("\\\\sarroca\\comu-inf$\\Suport\\Logs\\arxiu_registre_"+userName+"_"+UtilsTime.nowName()+".log", "L'usuari: "+userName+" ha creat el registre: "+registre+"\n"+UtilsTime.now());
+//						UtilsLog.crearFitxer("\\\\sarroca\\comu-inf$\\Suport\\Logs\\arxiu_registre_"+userName+"_"+UtilsTime.nowName()+".log", "L'usuari: "+userName+" ha creat el registre: "+registre+"\n"+UtilsTime.now());
+						//TODO casa
+						UtilsLog.crearFitxer("c:/sarroca/comu-inf$/Suport/Logs/arxiu_registre_"+userName+"_"+UtilsTime.nowName()+".log", "L'usuari: "+userName+" ha creat el registre: "+registre+"\n"+UtilsTime.now());
 						netejaTextFields();
-					} catch (SQLException e1) {
+					} catch (/*SQLException*/Exception e1) {
 						e1.printStackTrace();
 					}
 				}
@@ -242,7 +281,7 @@ public class FrameUsers extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				netejaTextFields();
 				//Li passo el nom d'usuari que s'ha loguejat en la sessio, per si s'han de fer accions de LOG
-				FrameDocManagement checkFrame = new FrameDocManagement(userName);
+				FrameDocManagement checkFrame = new FrameDocManagement(userName, jdbcTemplate);
 				frameUsers.setVisible(false);
 				checkFrame.setVisible(true);
 			}

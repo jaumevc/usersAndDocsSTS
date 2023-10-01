@@ -1,32 +1,50 @@
 package app.gestio;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import app.frames.FrameLogin;
-
 import javax.swing.SwingUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import app.frames.FrameLogin;
+import app.repository.UserRepository;
 
 @SpringBootApplication
-public class GestioUsuarisApplication /*implements CommandLineRunner*/{
+public class GestioUsuarisApplication implements CommandLineRunner{
 
 	private static Logger LOG = LoggerFactory.getLogger(GestioUsuarisApplication.class);
+	
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+//	@Autowired
+//	UserRepository userRepo;
+	
 	public static void main(String[] args) {
-		SpringApplication.run(GestioUsuarisApplication.class, args);
-		System.setProperty("java.awt.headless", "false");
-		SwingUtilities.invokeLater(() -> {
-			FrameLogin loginFrame = new FrameLogin();
-			loginFrame.setVisible(true);
-			LOG.info("Proves d'inici realitzades ok");
-		});
+		new SpringApplicationBuilder(GestioUsuarisApplication.class).headless(false).run(args);
+//		SpringApplication.run(GestioUsuarisApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		FrameLogin loginFrame = new FrameLogin(jdbcTemplate);
+		loginFrame.setVisible(true);
+		
+//		System.setProperty("java.awt.headless", "false");
+//		SwingUtilities.invokeLater(() -> {
+//			FrameLogin loginFrame = new FrameLogin(jdbcTemplate);
+//			loginFrame.setVisible(true);
+//			LOG.info("Proves d'inici realitzades ok");
+//		});
 	}
 
 //	@Override
 //	public void run(String... args) throws Exception {
+//
 //		LOG.warn("Hola Mon Jaume");
 //		LOG.info("Proves");
 //		try {
@@ -36,5 +54,4 @@ public class GestioUsuarisApplication /*implements CommandLineRunner*/{
 //			e.printStackTrace();
 //		}
 //	}
-
 }

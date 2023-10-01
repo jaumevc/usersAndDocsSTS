@@ -15,6 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import app.security.ActiveDirectory;
 import app.service.UtilsLog;
 import app.service.UtilsTime;
@@ -31,7 +34,7 @@ public class FrameLogin extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FrameLogin() {
+	public FrameLogin(JdbcTemplate jdbcTemplate) {
 		setTitle("LOGIN GESTIO D'USUARIS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 370, 300);
@@ -69,35 +72,51 @@ public class FrameLogin extends JFrame {
 		btnReset.setBounds(148, 177, 74, 23);
 		contentPane.add(btnReset);
 		
-		addListeners(this);
+		addListeners(this, jdbcTemplate);
 	}
 
-	private void addListeners(FrameLogin frameLogin) {
+	private void addListeners(FrameLogin frameLogin, JdbcTemplate jdbcTemplate) {
 		btnValidar.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent e) {
 				
-				try {
-					LdapContext ctx = ActiveDirectory.getConnection(txtFieldUser.getText(), passField.getText());
-					ctx.close();
+				// TODO casa: comentar el if i deixar el try-catch de dins del else
+				if(StringUtils.equals(txtFieldUser.getText(), "Jaume")) {
 					
 					JOptionPane.showMessageDialog(rootPane, "Validació OK!!");
-					
-					UtilsLog.crearFitxer("\\\\sarroca\\comu-inf$\\Suport\\Logs\\arxiu_loginOK_"+txtFieldUser.getText()+"_"+UtilsTime.nowName()+".log", txtFieldUser.getText()+", login OK\n"+UtilsTime.now());
-					
+					UtilsLog.crearFitxer(
+							"C:/sarroca/comu-inf$/Suport/Logs/arxiu_loginOK_" + txtFieldUser.getText() + "_"
+									+ UtilsTime.nowName() + ".log",
+							txtFieldUser.getText() + ", login OK\n" + UtilsTime.now());
+
 					frameLogin.setVisible(false);
-					
-					FrameUsers frame = new FrameUsers(txtFieldUser.getText());
+
+					FrameUsers frame = new FrameUsers(txtFieldUser.getText(), jdbcTemplate);
 					frame.setVisible(true);
 					
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(rootPane, "Validació KO!!\n"+ex.getMessage());
-					UtilsLog.crearFitxer("\\\\sarroca\\comu-inf$\\Suport\\Logs\\arxiu_loginKO_"+txtFieldUser.getText()+"_"+UtilsTime.nowName()+".log", txtFieldUser.getText()+", login KO\n"+UtilsTime.now());
-					txtFieldUser.setText("");
-					passField.setText("");
-					txtFieldUser.requestFocus();
+				} else {
+
+					try {
+						LdapContext ctx = ActiveDirectory.getConnection(txtFieldUser.getText(), passField.getText());
+						ctx.close();
+
+						JOptionPane.showMessageDialog(rootPane, "Validació OK!!");
+
+						UtilsLog.crearFitxer("\\\\sarroca\\comu-inf$\\Suport\\Logs\\arxiu_loginOK_"+txtFieldUser.getText()+"_"+UtilsTime.nowName()+".log", txtFieldUser.getText()+", login OK\n"+UtilsTime.now());
+
+						frameLogin.setVisible(false);
+
+						FrameUsers frame = new FrameUsers(txtFieldUser.getText(), jdbcTemplate);
+						frame.setVisible(true);
+
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(rootPane, "Validació KO!!\n" + ex.getMessage());
+						UtilsLog.crearFitxer("\\\\sarroca\\comu-inf$\\Suport\\Logs\\arxiu_loginKO_"+txtFieldUser.getText()+"_"+UtilsTime.nowName()+".log", txtFieldUser.getText()+", login KO\n"+UtilsTime.now());
+						txtFieldUser.setText("");
+						passField.setText("");
+						txtFieldUser.requestFocus();
+					}
 				}
-				
 			}
 		});
 		

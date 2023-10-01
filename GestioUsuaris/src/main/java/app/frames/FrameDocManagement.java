@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+
 //import app.model.FilesFromFolder;
 
 public class FrameDocManagement extends JFrame {
@@ -30,12 +32,13 @@ public class FrameDocManagement extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FrameDocManagement(String userNameAD) {
+	public FrameDocManagement(String userNameAD, JdbcTemplate jdbcTemplate) {
 		setTitle("GESTIO DE DOCUMENTS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 499, 300);
 		
-		setIconImage(new ImageIcon(getClass().getResource("/images/grupo.png")).getImage());
+//		setIconImage(new ImageIcon(getClass().getResource("/images/grupo.png")).getImage());
+		setIconImage(new ImageIcon(getClass().getResource("/static/images/grupo.png")).getImage());
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -61,16 +64,16 @@ public class FrameDocManagement extends JFrame {
 		btnCarregaDocuments.setFocusable(false);
 		contentPane.add(btnCarregaDocuments);
 		
-		addListeners(this, userNameAD);
+		addListeners(this, userNameAD, jdbcTemplate);
 	}
 
-	private void addListeners(FrameDocManagement frameDocManagement, String userNameAD) {
+	private void addListeners(FrameDocManagement frameDocManagement, String userNameAD, JdbcTemplate jdbcTemplate) {
 		
 		btnTornar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frameDocManagement.setVisible(false);
-//				FrameUsers frameUsers = new FrameUsers(userNameAD);
-//				frameUsers.setVisible(true);
+				FrameUsers frameUsers = new FrameUsers(userNameAD, jdbcTemplate);
+				frameUsers.setVisible(true);
 			}
 		});
 		
