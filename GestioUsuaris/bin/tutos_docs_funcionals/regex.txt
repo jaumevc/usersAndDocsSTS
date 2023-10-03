@@ -1,0 +1,25 @@
+textFieldCognom1.addFocusListener(new FocusListener()  {
+			 @Override
+			 public void focusLost(FocusEvent e) {
+			     
+					if(textFieldCognom1.getText().length()<=50) {
+						Pattern patro = Pattern.compile("/^[A-Za-zñÑáàéèíóòúÁÀÉÈÍÓÒÚ\\s]*$/");
+						Matcher mat = patro.matcher(textFieldCognom1.getText());
+						
+						if(mat.matches()) {
+							JOptionPane.showMessageDialog(rootPane, "El format del cognom és correcte");
+						}else {
+							JOptionPane.showMessageDialog(rootPane, "El format del cognom només pot contenir lletres");
+							textFieldCognom1.requestFocus();
+						}
+					}else {
+						JOptionPane.showMessageDialog(rootPane, "El cognom no pot tenir més de 50 lletres");
+						textFieldCognom1.requestFocus();
+					}
+				}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});

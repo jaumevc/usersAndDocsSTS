@@ -1,0 +1,5 @@
+USE demodb;
+GRANT CREATE TABLE TO addUser;
+GO
+
+GRANT ALTER ON SCHEMA :: dbo TO addUser;
