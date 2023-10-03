@@ -37,7 +37,6 @@ public class GestioUsuarisApplication implements CommandLineRunner{
 //			LOG.info("Proves d'inici realitzades ok");
 //		});
 	}
-
 //	@Override
 //	public void run(String... args) throws Exception {
 //
